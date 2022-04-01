@@ -5,6 +5,7 @@
 import base64
 import json
 import os
+from odoo.tools import DotDict
 
 from odoo import api, fields, models
 from odoo.tools import DotDict
