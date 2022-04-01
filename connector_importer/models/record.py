@@ -5,6 +5,7 @@
 import base64
 import json
 import os
+from odoo.tools import DotDict
 
 from odoo import api, fields, models
 
@@ -79,6 +80,10 @@ class ImportRecord(models.Model):
         :param model_name: name of the model to import
         :param is_last_importer: flag for last importer of the recordset
         """
+        # When using jobs, importer_config is loaded from the DB as a pure dict.
+        # Make sure we always have a dotted dict.
+        # FIXME: we should pass the import_type_id to the job and load it here.
+        importer_config = DotDict(importer_config)
         kwargs = {
             "options": importer_config.options,
         }
