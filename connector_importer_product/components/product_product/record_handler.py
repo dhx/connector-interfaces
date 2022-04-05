@@ -5,7 +5,7 @@ from odoo import _
 
 from odoo.addons.component.core import Component
 
-from ..utils import sanitize_external_id
+from ...utils import sanitize_external_id
 
 
 class ProductProductRecordHandler(Component):
