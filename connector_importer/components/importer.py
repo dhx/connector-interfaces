@@ -75,8 +75,8 @@ class RecordImporter(Component):
         self.record_handler = self.component(usage=self._record_handler_usage)
         self.record_handler._init_handler(
             importer=self,
-            unique_key=self.odoo_unique_key,
-            unique_key_is_xmlid=self.odoo_unique_key_is_xmlid,
+            unique_key=self.unique_key,
+            unique_key_is_xmlid=self.unique_key_is_xmlid,
         )
         # tracking handler is responsible for logging and chunk reports
         self.tracker = self.component(usage=self._tracking_handler_usage)
@@ -84,6 +84,16 @@ class RecordImporter(Component):
             model_name=self.model._name,
             logger_name=LOGGER_NAME,
             log_prefix=self.recordset.import_type_id.key + " ",
+        )
+
+    @property
+    def unique_key(self):
+        return self.work.options.importer.get("odoo_unique_key", self.odoo_unique_key)
+
+    @property
+    def unique_key_is_xmlid(self):
+        return self.work.options.importer.get(
+            "odoo_unique_key_is_xmlid", self.odoo_unique_key_is_xmlid
         )
 
     # Override to not rely on automatic mapper lookup.
