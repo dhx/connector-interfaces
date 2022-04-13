@@ -139,7 +139,7 @@ class RecordImporter(Component):
             if not isinstance(v, (tuple, list)):
                 req[k] = (v,)
             all_values.extend(req[k])
-        unique_key = self.odoo_unique_key
+        unique_key = self.unique_key
         if (
             unique_key
             and unique_key not in list(req.keys())
@@ -202,7 +202,7 @@ class RecordImporter(Component):
         missing = (
             not source_key.startswith("__") and orig_values.get(source_key) is None
         )
-        unique_key = self.odoo_unique_key
+        unique_key = self.unique_key
         if missing:
             msg = "MISSING REQUIRED SOURCE KEY={}".format(source_key)
             if unique_key and values.get(unique_key):
@@ -239,10 +239,8 @@ class RecordImporter(Component):
             and not self.must_override_existing
         ):
             msg = "ALREADY EXISTS"
-            if self.odoo_unique_key:
-                msg += ": {}={}".format(
-                    self.odoo_unique_key, values[self.odoo_unique_key]
-                )
+            if self.unique_key:
+                msg += ": {}={}".format(self.unique_key, values[self.unique_key])
             return {
                 "message": msg,
                 "odoo_record": self.record_handler.odoo_find(values, orig_values).id,
