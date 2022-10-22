@@ -44,7 +44,7 @@ def csv_content_to_file(data, encoding=None):
     if not encoding:
         encoding_info = get_encoding(data)
         encoding = encoding_info["encoding"]
-    if encoding is None or encoding != "utf-8":
+    if type(data) is bytes:
         try:
             data_str = data.decode(encoding)
         except (UnicodeDecodeError, TypeError):
@@ -77,7 +77,7 @@ def guess_csv_metadata(filecontent):
 
 
 def read_path(path):
-    with open(path, "r") as thefile:
+    with open(path, "rb") as thefile:
         return thefile.read()
 
 
