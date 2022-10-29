@@ -115,6 +115,10 @@ class CSVReader(object):
             lines = [
                 header,
             ] + lines[int(_from or 0) : int(_to or len(lines) + 1)]
+        if len(self.delimiter) > 1:
+            # the delimiter might be an escaped tab (which is not possible to
+            # enter directly when it can't be autodetected)
+            self.delimiter = self.delimiter.replace("\\t", "\t")
         reader = csv.DictReader(
             lines,
             delimiter=str(self.delimiter),
