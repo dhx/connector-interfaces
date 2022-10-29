@@ -24,7 +24,10 @@ class CSVSource(models.Model):
     )
     # This is for scheduled import via FS path (FTP, sFTP, etc)
     csv_path = fields.Char("CSV path")
-    csv_delimiter = fields.Char(string="CSV delimiter", default=";")
+    csv_delimiter = fields.Char(
+        string="CSV delimiter ('\\t' will be replaced with a tab character)",
+        default=";",
+    )
     csv_quotechar = fields.Char(string="CSV quotechar", default='"')
     csv_encoding = fields.Char(string="CSV Encoding")
     csv_rows_from_to = fields.Char(
