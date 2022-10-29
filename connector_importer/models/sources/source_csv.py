@@ -24,7 +24,10 @@ class CSVSource(models.Model):
     )
     # This is for scheduled import via FS path (FTP, sFTP, etc)
     csv_path = fields.Char("CSV path")
-    csv_delimiter = fields.Char(string="CSV delimiter", default=";")
+    csv_delimiter = fields.Char(
+        string="CSV delimiter ('\\t' will be replaced with a tab character)",
+        default=";",
+    )
     csv_quotechar = fields.Char(string="CSV quotechar", default='"')
     csv_encoding = fields.Char(string="CSV Encoding")
     csv_rows_from_to = fields.Char(
@@ -112,3 +115,10 @@ class CSVSource(models.Model):
             att = source._get_example_attachment()
             if att:
                 source.example_file_url = "/web/content/{}/{}".format(att.id, att.name)
+
+    def write(self, vals):
+        # the delimiter might be an escaped tab (which is not possible to
+        # enter directly in the frontend when it isn't autodetected)
+        if vals.get("csv_delimiter") == "\\t":
+            vals["csv_delimiter"] = "\t"
+        return super().write(vals)
