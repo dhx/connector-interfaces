@@ -115,3 +115,10 @@ class CSVSource(models.Model):
             att = source._get_example_attachment()
             if att:
                 source.example_file_url = "/web/content/{}/{}".format(att.id, att.name)
+
+    def write(self, vals):
+        # the delimiter might be an escaped tab (which is not possible to
+        # enter directly in the frontend when it isn't autodetected)
+        if vals.get("csv_delimiter") == "\\t":
+            vals["csv_delimiter"] = "\t"
+        return super().write(vals)
