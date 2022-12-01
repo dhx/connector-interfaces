@@ -7,7 +7,6 @@ import json
 import os
 
 from odoo import api, fields, models
-from odoo.tools import DotDict
 
 from ..log import logger
 from ..utils.misc import get_importer_for_config

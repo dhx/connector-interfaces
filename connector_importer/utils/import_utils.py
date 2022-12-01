@@ -44,7 +44,7 @@ def csv_content_to_file(data, encoding=None):
     if not encoding:
         encoding_info = get_encoding(data)
         encoding = encoding_info["encoding"]
-    if type(data) is bytes:
+    if encoding is None or encoding != "utf-8":
         try:
             data_str = data.decode(encoding)
         except (UnicodeDecodeError, TypeError):
@@ -77,7 +77,7 @@ def guess_csv_metadata(filecontent):
 
 
 def read_path(path):
-    with open(path, "rb") as thefile:
+    with open(path, "r") as thefile:
         return thefile.read()
 
 
@@ -115,10 +115,6 @@ class CSVReader(object):
             lines = [
                 header,
             ] + lines[int(_from or 0) : int(_to or len(lines) + 1)]
-        if len(self.delimiter) > 1:
-            # the delimiter might be an escaped tab (which is not possible to
-            # enter directly when it can't be autodetected)
-            self.delimiter = self.delimiter.replace("\\t", "\t")
         reader = csv.DictReader(
             lines,
             delimiter=str(self.delimiter),
