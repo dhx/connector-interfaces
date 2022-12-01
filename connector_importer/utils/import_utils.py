@@ -99,7 +99,12 @@ class CSVReader(object):
             filedata = read_path(filepath)
         self.bdata = csv_content_to_file(filedata, encoding)
         self.data = str(self.bdata, "utf-8")
-        self.delimiter = delimiter
+        if len(delimiter) > 1:
+            # the delimiter might be an escaped tab (which is not possible to
+            # enter directly when it can't be autodetected)
+            self.delimiter = delimiter.replace("\\t", "\t")
+        else:
+            self.delimiter = delimiter
         self.quotechar = quotechar
         self.encoding = encoding
         self.fieldnames = fieldnames
