@@ -116,9 +116,18 @@ class CSVSource(models.Model):
             if att:
                 source.example_file_url = "/web/content/{}/{}".format(att.id, att.name)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        # When creating a new csv source, we allow the delimiter in the ui
+        # to be an escaped tab (which is necessary as it is not possible for
+        # a tab character to survive the input sanitization)
+        for vals in vals_list:
+            if vals.get("csv_delimiter") == "\\t":
+                vals["csv_delimiter"] = "\t"
+        return super(CSVSource, self).create(vals_list)
+
     def write(self, vals):
-        # the delimiter might be an escaped tab (which is not possible to
-        # enter directly in the frontend when it isn't autodetected)
+        # Like in the create function the delimiter can be an escaped tab
         if vals.get("csv_delimiter") == "\\t":
             vals["csv_delimiter"] = "\t"
-        return super().write(vals)
+        return super(CSVSource, self).write(vals)
