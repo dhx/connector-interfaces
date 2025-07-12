@@ -41,6 +41,8 @@ class SFTPSourceImportRecordsetEventListener(Component):
         """
         source = importer.recordset.get_source()
         storage = source.storage_id
+        if not source.csv_filename:
+            return
         sftp_filepath = source._sftp_filepath()
         sftp_destination_path = False
 
