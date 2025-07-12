@@ -164,5 +164,5 @@ class RecordImporterCSVStd(Component):
             ]
         ).format(**counters)
         self.tracker._log(msg)
-        self._trigger_finish_events(record, is_last_importer=is_last_importer)
+        self.finalize_session(record, is_last_importer=is_last_importer)
         return counters
