@@ -104,10 +104,10 @@ class RecordImporterCSVStd(Component):
                 tracker_data["created"][i] = [values, line]
 
             # handle forced skipping
-            skip_info = self.skip_it(values, line)
-            if skip_info:
-                self.tracker.log_skipped(values, line, skip_info)
-                continue
+            #skip_info = self.skip_it(values, line)
+            #if skip_info:
+            #    self.tracker.log_skipped(values, line, skip_info)
+            #    continue
             dataset.append(values)
 
         if dataset:
